@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>DMP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <main class="canvas-container">
+      <div class="workspace" id="workspace">
+        <svg id="roads-svg"></svg>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-assets-btn">Ассеты</button>
+        <button class="tab-btn" id="tab-settings-btn">Настройки</button>
+      </div>
+  
+      <div id="content-assets" class="tab-content active">
+        <h3>Инструменты</h3>
+        <div class="tool-item" id="tool-loc">
+          <div class="tool-icon square-icon"></div>
+          <span>Локация</span>
+        </div>
+
+        <div class="tool-item" id="tool-road">
+          <div class="tool-icon road-icon">〰</div>
+          <span>Дорога</span>
+        </div>
+
+        <div class="tool-item" id="tool-delete">
+          <div class="tool-icon delete-icon">🗑</div>
+          <span>Ластик</span>
+        </div>
+      </div>
+      
+      <div id="content-settings" class="tab-content">
+      <div id="settings-empty-msg">Выберите объект на карте, чтобы изменить его настройки.</div>
+  
+      <div id="road-settings" style="display: none;">
+        <h3>Настройки дороги</h3>
+        <div class="setting-group" style="margin-bottom: 15px;">
+          <label for="road-type">Тип пути:</label>
+          <select id="road-type">
+            <option value="normal">Обычный тракт</option>
+            <option value="dashed">Тайная тропа</option>
+            <option value="wide">Главный тракт</option>
+          </select>
+        </div>
+        <div class="setting-group">
+          <label for="road-color">Цвет пути:</label>
+          <select id="road-color">
+            <option value="#000000">Стандартный (Черный)</option>
+            <option value="#e65100">Опасный (Оранжевый)</option>
+            <option value="#ab47bc">Магический (Пурпурный)</option>
+            <option value="#388e3c">Безопасный (Зеленый)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="node-settings" style="display: none;">
+        <h3>Настройки локации</h3>
+        <div class="setting-group" style="margin-bottom: 15px;">
+          <label for="node-color">Цвет локации:</label>
+          <select id="node-color">
+            <option value="#ffffff">Стандартный (Белый)</option>
+            <option value="#ffe082">Город / Таверна (Желтый)</option>
+            <option value="#ffcdd2">Опасность / Данж (Красный)</option>
+            <option value="#c8e6c9">Природа(Зеленый)</option>
+            <option value="#e1bee7">Квест(Фиолетовый)</option>
+            <option value="#777777">Туман войны(Чёрный)</option>
+          </select>
+        </div>
+        <div class="setting-group">
+          <label for="node-icon">Иконка:</label>
+          <select id="node-icon">
+            <option value="">Без иконки</option>
+            <option value="🏰">🏰 Замок / Город</option>
+            <option value="🌲">🌲 Лес</option>
+            <option value="⚔️">⚔️ Арена / Данж</option>
+            <option value="💀">💀 Босс</option>
+            <option value="🏪">🏪 Лавка</option>
+            <option value="❗">❗ Квест</option>
+            <option value="❓">❓ Неизвестно</option>
+            <option value="🔥">🔥 Лагерь</option>
+            <option value="💎">💎 Сокровище</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="map-file-controls" style="padding: 15px; border-top: 2px solid #000; display: flex; gap: 10px; background: #fafafa;">
+        <button id="btn-export" style="flex: 1; padding: 8px; font-weight: bold; border: 2px solid #000; background: #fff; cursor: pointer;">Скачать</button>
+        <button id="btn-import" style="flex: 1; padding: 8px; font-weight: bold; border: 2px solid #000; background: #fff; cursor: pointer;">Загрузить</button>
+        <input type="file" id="import-file" accept=".json" style="display: none;">
+      </div>
+    </aside>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>

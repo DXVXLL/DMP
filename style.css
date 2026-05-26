@@ -1,0 +1,339 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.canvas-container {
+  flex-grow: 1;
+  height: 100%;
+  background-color: #f0f0f0;
+  overflow: auto;
+  position: relative;
+}
+
+
+/* Рабочее пространство */
+
+
+.workspace {
+  width: 3000px;
+  height: 3000px;
+  background-color: #ffffff;
+  background-image: radial-gradient(#ccc 1px, transparent 1px);
+  background-size: 20px 20px;
+  position: relative;
+}
+
+#roads-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+
+/* Боковая панель */
+
+
+.sidebar {
+  width: 250px;
+  height: 100%;
+  background-color: #ffffff;
+  border-left: 2px solid #000000;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #000000;
+  color: black;
+  background: #f5f5f5;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tab-btn:not(:last-child) {
+  border-right: 2px solid #000;
+}
+
+.tab-btn.active {
+  background: #fff;
+  color: black;
+  border-bottom: 4px solid #00acc1;
+}
+
+
+/* Вкладки */
+
+
+.tab-content {
+  display: none;
+  flex-direction: column;
+  padding: 20px;
+  height: calc(100% - 50px);
+}
+
+.tab-content.active {
+  display: flex;
+}
+
+.tab-content h3 {
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+
+/* Панель инструментов */
+
+
+.tool-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fafafa;
+  transition: background 0.2s;
+}
+
+.tool-item:hover {
+  background-color: #eee;
+}
+
+.tool-item.active {
+  background-color: #e0f7fa;
+  border-color: #00acc1;
+}
+
+.tool-item#tool-delete.active {
+  background-color: #ffebee;
+  border-color: #ef5350;
+}
+
+
+/* Иконки инструментов */
+
+
+.tool-icon {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #000000;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.square-icon {
+  background-color: #fff;
+}
+
+.road-icon {
+  border: none; font-size: 20px;
+}
+
+.delete-icon {
+  border: none; font-size: 20px;
+}
+
+
+/* Локации */
+
+
+.map-node {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 2px solid #000000;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+  z-index: 5;
+  user-select: none;
+  animation: nodeSpawn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.node-text {
+  font-size: 14px;
+  font-weight: 500;
+  word-wrap: break-word;
+}
+
+@keyframes nodeSpawn {
+  0% {
+    opacity: 0; transform: scale(0.5);
+  }
+  100% {
+    opacity: 1; transform: scale(1);
+  }
+}
+
+
+/* Сетка */
+
+
+.map-node-preview {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 2px dashed #00acc1;
+  background-color: rgba(0, 172, 193, 0.15);
+  display: none;
+  pointer-events: none;
+  z-index: 100;
+}
+
+
+/* Инпуты */
+
+
+.node-input {
+  width: 100%;
+  border: 1px solid #00acc1;
+  padding: 4px;
+  font-size: 14px;
+  text-align: center;
+  outline: none;
+  font-family: inherit;
+}
+
+
+/* Дороги */
+
+
+.map-road {
+  stroke: #000000; 
+  stroke-width: 4px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s, stroke-width 0.3s;
+}
+
+.road-appearing {
+  animation: drawLine 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.road-dashed-appearing {
+  animation: drawLine 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes drawLine {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.map-road.type-dashed {
+  stroke-dasharray: 10, 14;
+}
+
+.map-road.type-wide {
+  stroke-width: 8px !important;
+}
+
+.map-road[data-color="#ab47bc"]:not(.road-appearing):not(.road-dashed-appearing) {
+  animation: magicPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes magicPulse {
+  0% {
+    stroke-width: 4px; opacity: 0.8;
+  }
+  100% {
+    stroke-width: 6px; opacity: 1;
+  }
+}
+
+.map-road.selected-road {
+  stroke: #00acc1 !important;
+}
+
+
+/* Ластик */
+
+
+.workspace.delete-mode .map-node:hover {
+  border: #ef5350 dashed !important;
+  box-shadow: 0 0 10px rgba(239, 83, 80, 0.5);
+  cursor: pointer;
+}
+
+.workspace.delete-mode .map-road:hover {
+  stroke: #ef5350 !important;
+  cursor: pointer;
+}
+
+
+/* Настройки */
+
+
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.setting-group select {
+  padding: 8px;
+  border: 2px solid #000;
+  border-radius: 4px;
+  font-family: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  background: #fff;
+}
+
+.node-icon-display {
+  font-size: 24px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.map-node {
+  flex-direction: column; 
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.map-node.selected-node {
+  border-color: #00acc1 !important;
+  box-shadow: 0 0 10px rgba(0, 172, 193, 0.5);
+}
